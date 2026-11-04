@@ -19,6 +19,11 @@
         <Name>FLIGHTDECK</Name>
         <Workflow>
           <Nodes>
+            <Expression xsi:type="IncludeWorkflow" Path="UclOpen.Logging:LogController.bonsai">
+              <SubjectId>Algernon</SubjectId>
+              <SessionId>001</SessionId>
+              <Path>C:\LocalData</Path>
+            </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="UclOpen.Devices:BehaviorBoard.Timestamps.bonsai">
               <EventsSubjectName>BehaviorEvents</EventsSubjectName>
               <CommandsSubjectName>BehaviorCommands</CommandsSubjectName>
@@ -174,9 +179,9 @@
             </Expression>
           </Nodes>
           <Edges>
-            <Edge From="1" To="2" Label="Source1" />
-            <Edge From="4" To="5" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -244,7 +249,7 @@
               <harp:Register xsi:type="harp:TimestampSeconds" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="UclOpen.Devices:BehaviorBoard.CameraTriggerController.bonsai">
-              <Trigger0Frequency>50</Trigger0Frequency>
+              <Trigger0Frequency>150</Trigger0Frequency>
               <Trigger1Frequency>50</Trigger1Frequency>
               <BehaviorCommandsSubjectName>BehaviorCommands</BehaviorCommandsSubjectName>
               <BehaviorEventsSubjectName>BehaviorEvents</BehaviorEventsSubjectName>
@@ -520,11 +525,6 @@
         <Name>Logging</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="IncludeWorkflow" Path="UclOpen.Logging:LogController.bonsai">
-              <SubjectId>Algernon</SubjectId>
-              <SessionId>001</SessionId>
-              <Path>C:\LocalData</Path>
-            </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>BehaviorEvents</Name>
             </Expression>
@@ -638,7 +638,7 @@ Item4 as ExposureTime)</scr:Expression>
                           <Property Name="FileName" />
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\LocalData\sub-Algernon\ses-001_date-2026-11-03T17-45-58\Cameras\VideoData.csv</io:FileName>
+                          <io:FileName>C:\LocalData\sub-Algernon\ses-001_date-2026-11-04T11-30-55\Cameras\VideoData.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>true</io:Overwrite>
                           <io:Suffix>None</io:Suffix>
@@ -731,7 +731,7 @@ Item4 as ExposureTime)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="cv:VideoWriter">
-                      <cv:FileName>C:\LocalData\sub-Algernon\ses-001_date-2026-11-03T17-45-58\Cameras\VideoData.avi</cv:FileName>
+                      <cv:FileName>C:\LocalData\sub-Algernon\ses-001_date-2026-11-04T11-30-55\Cameras\VideoData.avi</cv:FileName>
                       <cv:Suffix>None</cv:Suffix>
                       <cv:Buffered>false</cv:Buffered>
                       <cv:Overwrite>false</cv:Overwrite>
@@ -771,9 +771,9 @@ Item4 as ExposureTime)</scr:Expression>
             </Expression>
           </Nodes>
           <Edges>
-            <Edge From="1" To="2" Label="Source1" />
-            <Edge From="3" To="4" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
