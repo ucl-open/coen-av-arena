@@ -6,10 +6,9 @@
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns:beh="clr-namespace:Harp.Behavior;assembly=Harp.Behavior"
                  xmlns:harp="clr-namespace:Bonsai.Harp;assembly=Bonsai.Harp"
-                 xmlns:p1="clr-namespace:;assembly=Extensions"
-                 xmlns:port="clr-namespace:Bonsai.IO.Ports;assembly=Bonsai.System"
-                 xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input"
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input"
+                 xmlns:p1="clr-namespace:;assembly=Extensions"
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns="https://bonsai-rx.org/2018/workflow">
@@ -35,7 +34,10 @@
               <Selector>Value.Image</Selector>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
-              <Name>LickState</Name>
+              <Name>LickStateL</Name>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>LickStateR</Name>
             </Expression>
             <Expression xsi:type="Disable">
               <Builder xsi:type="ExternalizedMapping">
@@ -178,8 +180,8 @@
           </Nodes>
           <Edges>
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
-            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -261,63 +263,38 @@
               <Camera1TriggerEventsSubjectName>Camera1TriggerEvents</Camera1TriggerEventsSubjectName>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="UclOpen.Devices:LicketySplit.bonsai">
-              <CommandsSubjectName>LickCommands</CommandsSubjectName>
+              <CommandsSubjectName>LickCommandsR</CommandsSubjectName>
               <PortName>COM9</PortName>
               <DumpRegisters>true</DumpRegisters>
               <Heartbeat>Enabled</Heartbeat>
-              <EventsSubjectName>LickEvents</EventsSubjectName>
+              <EventsSubjectName>LickEventsR</EventsSubjectName>
               <Channel0TriggerThreshold>0</Channel0TriggerThreshold>
               <Channel0UntriggerThreshold>0</Channel0UntriggerThreshold>
-              <LickStateSubjectName>LickState</LickStateSubjectName>
+              <LickStateSubjectName>LickStateR</LickStateSubjectName>
             </Expression>
             <Expression xsi:type="harp:FilterRegister">
               <harp:FilterType>Include</harp:FilterType>
               <harp:Register xsi:type="harp:TimestampSeconds" />
             </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="GroupWorkflow">
-                <Name>Arduino</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Tuple(sys:Int32,sys:Int32,sys:Int32,sys:Int32)">
-                      <rx:Name>SerialCommands</rx:Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:WriteLedMessage" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="port:SerialWriteLine">
-                        <port:PortName>COM4</port:PortName>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="wie:KeyDown">
-                        <wie:Filter>X</wie:Filter>
-                        <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="BooleanProperty">
-                        <Value>true</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>TurnLedsOff</Name>
-                    </Expression>
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source1" />
-                    <Edge From="4" To="5" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Builder>
+            <Expression xsi:type="IncludeWorkflow" Path="UclOpen.Devices:LicketySplit.bonsai">
+              <CommandsSubjectName>LickCommandsL</CommandsSubjectName>
+              <PortName>COM8</PortName>
+              <DumpRegisters>true</DumpRegisters>
+              <Heartbeat>Enabled</Heartbeat>
+              <EventsSubjectName>LickEventsL</EventsSubjectName>
+              <Channel0TriggerThreshold>0</Channel0TriggerThreshold>
+              <Channel0UntriggerThreshold>0</Channel0UntriggerThreshold>
+              <LickStateSubjectName>LickStateL</LickStateSubjectName>
+            </Expression>
+            <Expression xsi:type="harp:FilterRegister">
+              <harp:FilterType>Include</harp:FilterType>
+              <harp:Register xsi:type="harp:TimestampSeconds" />
             </Expression>
           </Nodes>
           <Edges>
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -638,7 +615,7 @@ Item4 as ExposureTime)</scr:Expression>
                           <Property Name="FileName" />
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\LocalData\sub-Algernon\ses-001_date-2026-11-08T18-07-23\Cameras\VideoData.csv</io:FileName>
+                          <io:FileName>C:\LocalData\sub-Algernon\ses-001_date-2026-11-09T14-43-43\Cameras\VideoData.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>true</io:Overwrite>
                           <io:Suffix>None</io:Suffix>
@@ -731,7 +708,7 @@ Item4 as ExposureTime)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="cv:VideoWriter">
-                      <cv:FileName>C:\LocalData\sub-Algernon\ses-001_date-2026-11-08T18-07-23\Cameras\VideoData.avi</cv:FileName>
+                      <cv:FileName>C:\LocalData\sub-Algernon\ses-001_date-2026-11-09T14-43-43\Cameras\VideoData.avi</cv:FileName>
                       <cv:Suffix>None</cv:Suffix>
                       <cv:Buffered>false</cv:Buffered>
                       <cv:Overwrite>false</cv:Overwrite>
