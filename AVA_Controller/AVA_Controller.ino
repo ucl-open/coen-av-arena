@@ -41,7 +41,7 @@
 // Any LED with its bit set to 0 gets turned off
 #define HEADER_BITMASK 0xFE  // This tells the Arduino 'The next incoming bytes are a bitmask, not an ASCII command'
 #define MASK_BYTES ((NUM_LEDS + 7) / 8)  // Each byte holds 8 bits, and each bit represents 1 LED. So, we need NUM_LEDS / 8. The +7 is to 'round up' with odd numbers of LEDs
-#define PAYLOAD_SIZE (MASK_BYTES + 3)  // The payload is the total number of bytes expected by the Arduino: bitmask + three RGB colors
+#define BITMASK_PAYLOAD (MASK_BYTES + 3)  // The payload is the total number of bytes expected by the Arduino: bitmask + three RGB colors
 
 // FULL-FRAME MODE: header + 3 bytes per LED (to be used when LEDs have unique colors)
 // Each LED gets its own RGB color
