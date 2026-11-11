@@ -194,6 +194,6 @@ void parseCommand(const char* cmd) {
   else if (cmd[0] == 'X') {
     FastLED.clear();
     FastLED.show();
-    Serial.println("ARDUINO :: MSG - Full black-out");
+    Serial.println("ARDUINO :: MSG - Full blackout");
   }
 }
