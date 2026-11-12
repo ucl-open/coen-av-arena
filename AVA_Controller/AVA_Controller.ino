@@ -112,7 +112,7 @@ void loop() {
     }
     else if (b == '\n') { // Is the byte a newline?
       cmdBuf[cmdIdx] = '\0'; // Null-terminate the buffer to make it a proper C string, pass to parseCommand, and reset index.
-      parseCommand(cmdBuf);
+      applyASCII(cmdBuf);
       cmdIdx = 0;
     }
     else { // Anything else is treated as an ASCII command
@@ -168,7 +168,7 @@ void applyFullFrame() {
 // L,id,r,g,b    — light one LED with a specific color
 // O,id          — turn off one LED
 // X             — turn off all LEDs
-void parseCommand(const char* cmd) {
+void applyASCII(const char* cmd) {
   if (cmd[0] == 'L') {
     int id, r, g, b;
     if (sscanf(cmd, "L,%d,%d,%d,%d", &id, &r, &g, &b) == 4) {
