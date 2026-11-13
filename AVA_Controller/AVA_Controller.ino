@@ -86,12 +86,11 @@ int cmdIdx = 0;                   // Counter: how many ASCII characters so far?
 
 // SETUP
 void setup() {
-  Serial.begin(BAUD_RATE);
-  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS);
-  FastLED.setBrightness(LED_BRIGHT);
-  FastLED.clear();
-  FastLED.show();
-  Serial.println("ARDUINO :: Ready!");
+  Serial.begin(BAUD_RATE);          // Open serial at predefined Baud
+  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS); // Tell FastLED which pin, LED type, and how many
+  FastLED.clear();                  // Clear all LEDs
+  FastLED.show();                   // Push the clear-all-leds to the arena to black out everything
+  Serial.println("ARDUINO :: Ready!"); // Broadcast a message that we're ready
 }
 
 // LOOP
