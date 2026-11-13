@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Reactive.Linq;
 using Bonsai;
 
-[Description("Type an LED number + Enter to light it. X to turn all off. Only active when AVA_AsciiMode is on.")]
+[Description("Type an LED number + submit to light it. X to turn all off. Only active in ASCII mode.")]
 public class AVA_AsciiMessage : Transform<string, string>
 {
     private string _buffer = "";
@@ -21,7 +21,7 @@ public class AVA_AsciiMessage : Transform<string, string>
     {
         return source.SelectMany(key =>
         {
-            if (!AVA_AsciiMode.Active)
+            if (AVA_Mode.Current != AVA_ModeState.ASCII)
             {
                 return Observable.Empty<string>();
             }
@@ -33,7 +33,7 @@ public class AVA_AsciiMessage : Transform<string, string>
                 return Observable.Return("X");
             }
 
-            if (key == "Return")
+            if (key == "Return" || key == "Space")
             {
                 if (_buffer.Length > 0)
                 {

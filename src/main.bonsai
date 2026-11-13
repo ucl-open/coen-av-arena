@@ -833,15 +833,6 @@ Item4 as ExposureTime)</scr:Expression>
                 <Nodes>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="wie:KeyDown">
-                      <wie:Filter>A</wie:Filter>
-                      <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:AVA_AsciiModeToggle" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="wie:KeyDown">
                       <wie:Filter>NumPad0</wie:Filter>
                       <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
                     </Combinator>
@@ -999,44 +990,121 @@ Item4 as ExposureTime)</scr:Expression>
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="26" Label="Source1" />
                   <Edge From="2" To="3" Label="Source1" />
-                  <Edge From="3" To="28" Label="Source1" />
+                  <Edge From="3" To="26" Label="Source2" />
                   <Edge From="4" To="5" Label="Source1" />
-                  <Edge From="5" To="28" Label="Source2" />
+                  <Edge From="5" To="26" Label="Source3" />
                   <Edge From="6" To="7" Label="Source1" />
-                  <Edge From="7" To="28" Label="Source3" />
+                  <Edge From="7" To="26" Label="Source4" />
                   <Edge From="8" To="9" Label="Source1" />
-                  <Edge From="9" To="28" Label="Source4" />
+                  <Edge From="9" To="26" Label="Source5" />
                   <Edge From="10" To="11" Label="Source1" />
-                  <Edge From="11" To="28" Label="Source5" />
+                  <Edge From="11" To="26" Label="Source6" />
                   <Edge From="12" To="13" Label="Source1" />
-                  <Edge From="13" To="28" Label="Source6" />
+                  <Edge From="13" To="26" Label="Source7" />
                   <Edge From="14" To="15" Label="Source1" />
-                  <Edge From="15" To="28" Label="Source7" />
+                  <Edge From="15" To="26" Label="Source8" />
                   <Edge From="16" To="17" Label="Source1" />
-                  <Edge From="17" To="28" Label="Source8" />
+                  <Edge From="17" To="26" Label="Source9" />
                   <Edge From="18" To="19" Label="Source1" />
-                  <Edge From="19" To="28" Label="Source9" />
+                  <Edge From="19" To="26" Label="Source10" />
                   <Edge From="20" To="21" Label="Source1" />
-                  <Edge From="21" To="28" Label="Source10" />
+                  <Edge From="21" To="26" Label="Source11" />
                   <Edge From="22" To="23" Label="Source1" />
-                  <Edge From="23" To="28" Label="Source11" />
+                  <Edge From="23" To="26" Label="Source12" />
                   <Edge From="24" To="25" Label="Source1" />
-                  <Edge From="25" To="28" Label="Source12" />
+                  <Edge From="25" To="26" Label="Source13" />
                   <Edge From="26" To="27" Label="Source1" />
-                  <Edge From="27" To="28" Label="Source13" />
-                  <Edge From="28" To="29" Label="Source1" />
-                  <Edge From="29" To="30" Label="Source1" />
+                  <Edge From="27" To="28" Label="Source1" />
                 </Edges>
               </Workflow>
+            </Expression>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>BitmaskMode</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="wie:KeyDown">
+                      <wie:Filter>Space</wie:Filter>
+                      <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p1:AVA_RandomPattern">
+                      <p1:NumLeds>16</p1:NumLeds>
+                      <p1:OnProbability>0.3</p1:OnProbability>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p1:AVA_BitmaskMessage">
+                      <p1:LedColor>255,255,255</p1:LedColor>
+                      <p1:Staged>true</p1:Staged>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="port:SerialWrite">
+                      <port:PortName>ArduinoPort</port:PortName>
+                    </Combinator>
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="wie:KeyDown">
+                <wie:Filter>A</wie:Filter>
+                <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p1:AVA_ModeToggle">
+                <p1:Mode>ASCII</p1:Mode>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="wie:KeyDown">
+                <wie:Filter>B</wie:Filter>
+                <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p1:AVA_ModeToggle">
+                <p1:Mode>Bitmask</p1:Mode>
+              </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="port:SerialReadLine">
                 <port:PortName>ArduinoPort</port:PortName>
               </Combinator>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="wie:KeyDown">
+                <wie:Filter>T</wie:Filter>
+                <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>T</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="port:SerialWriteLine">
+                <port:PortName>ArduinoPort</port:PortName>
+              </Combinator>
+            </Expression>
           </Nodes>
-          <Edges />
+          <Edges>
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+          </Edges>
         </Workflow>
       </Expression>
     </Nodes>
