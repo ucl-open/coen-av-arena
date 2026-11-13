@@ -175,7 +175,7 @@ void applyASCII(const char* cmd) {
       if (id >= 0 && id < NUM_LEDS) {
         leds[id] = CRGB(r, g, b);
         FastLED.show();
-        Serial.print("ARDUINO :: MSG - Light one LED");
+        Serial.print("ARDUINO :: MSG - Light LED ");
         Serial.println(id);
       }
     }
@@ -186,7 +186,7 @@ void applyASCII(const char* cmd) {
       if (id >= 0 && id < NUM_LEDS) {
         leds[id] = CRGB::Black;
         FastLED.show();
-        Serial.print("ARDUINO :: MSG - Turn off one LED");
+        Serial.print("ARDUINO :: MSG - Turn off LED ");
         Serial.println(id);
       }
     }
