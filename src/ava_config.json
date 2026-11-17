@@ -1,0 +1,90 @@
+{
+  "ArenaLayout": {
+    "numLeds": 400,
+    "ledsPerTile": 16,
+    "numTiles": 25,
+    "tileWidth_cm": 10,
+    "tileHeight_cm": 10,
+    "gridColumns": 5,
+    "gridRows": 5,
+    "origin": "lower-left",
+    "wiringPattern": "zigzag",
+    "wiringStart": "lower-left",
+    "tileMap": {
+      "tile_01": { "ledStart": 0,   "ledEnd": 15,  "center_x": 5,  "center_y": 5  },
+      "tile_02": { "ledStart": 16,  "ledEnd": 31,  "center_x": 15, "center_y": 5  },
+      "tile_03": { "ledStart": 32,  "ledEnd": 47,  "center_x": 25, "center_y": 5  },
+      "tile_04": { "ledStart": 48,  "ledEnd": 63,  "center_x": 35, "center_y": 5  },
+      "tile_05": { "ledStart": 64,  "ledEnd": 79,  "center_x": 45, "center_y": 5  },
+      "tile_06": { "ledStart": 80,  "ledEnd": 95,  "center_x": 45, "center_y": 15 },
+      "tile_07": { "ledStart": 96,  "ledEnd": 111, "center_x": 35, "center_y": 15 },
+      "tile_08": { "ledStart": 112, "ledEnd": 127, "center_x": 25, "center_y": 15 },
+      "tile_09": { "ledStart": 128, "ledEnd": 143, "center_x": 15, "center_y": 15 },
+      "tile_10": { "ledStart": 144, "ledEnd": 159, "center_x": 5,  "center_y": 15 },
+      "tile_11": { "ledStart": 160, "ledEnd": 175, "center_x": 5,  "center_y": 25 },
+      "tile_12": { "ledStart": 176, "ledEnd": 191, "center_x": 15, "center_y": 25 },
+      "tile_13": { "ledStart": 192, "ledEnd": 207, "center_x": 25, "center_y": 25 },
+      "tile_14": { "ledStart": 208, "ledEnd": 223, "center_x": 35, "center_y": 25 },
+      "tile_15": { "ledStart": 224, "ledEnd": 239, "center_x": 45, "center_y": 25 },
+      "tile_16": { "ledStart": 240, "ledEnd": 255, "center_x": 45, "center_y": 35 },
+      "tile_17": { "ledStart": 256, "ledEnd": 271, "center_x": 35, "center_y": 35 },
+      "tile_18": { "ledStart": 272, "ledEnd": 287, "center_x": 25, "center_y": 35 },
+      "tile_19": { "ledStart": 288, "ledEnd": 303, "center_x": 15, "center_y": 35 },
+      "tile_20": { "ledStart": 304, "ledEnd": 319, "center_x": 5,  "center_y": 35 },
+      "tile_21": { "ledStart": 320, "ledEnd": 335, "center_x": 5,  "center_y": 45 },
+      "tile_22": { "ledStart": 336, "ledEnd": 351, "center_x": 15, "center_y": 45 },
+      "tile_23": { "ledStart": 352, "ledEnd": 367, "center_x": 25, "center_y": 45 },
+      "tile_24": { "ledStart": 368, "ledEnd": 383, "center_x": 35, "center_y": 45 },
+      "tile_25": { "ledStart": 384, "ledEnd": 399, "center_x": 45, "center_y": 45 }
+    }
+  },
+  "LedSpecifications": {
+    "color": [255, 255, 255],
+    "brightness": 10,
+    "duration": null
+  },
+  "TrialTypes": {
+    "tile_02_stimulus": {
+      "tiles": ["tile_02"],
+      "rewardTile": "tile_02"
+    },
+    "tile_10_stimulus": {
+      "tiles": ["tile_10"],
+      "rewardTile": "tile_10"
+    }
+  },
+  "RewardSettings": {
+    "pulseDuration_ms": 50,
+    "valveCalibration": {
+      "tile_02": { "numPulses": 3 },
+      "tile_10": { "numPulses": 4 }
+    }
+  },
+  "TrialStructure": {
+    "trialTypeRatios": {
+      "tile_02_stimulus": 10,
+      "tile_10_stimulus": 10
+    },
+    "numBlocks": 5,
+    "pseudoRandom": {
+      "maxConsecutiveSameType": 4
+    },
+    "iti": [3.0, 0.5],
+    "responseWindow": 5.0,
+    "timeoutPenalty": 2.0,
+    "incorrectPenalty": 2.0
+  },
+  "TriggerZones": {
+    "startZone": {
+      "x": 40,
+      "y": 40,
+      "radius": 5
+    }
+  },
+  "CalibrationSettings": {
+    "calibrationLedIds": [0, 48, 64, 112, 160, 208, 224, 272, 320, 368, 384],
+    "realWorldX": [5, 35, 45, 25, 5, 35, 45, 25, 5, 35, 45],
+    "realWorldY": [5, 5, 5, 15, 25, 25, 25, 35, 45, 45, 45],
+    "errorThreshold": 0.5
+  }
+}

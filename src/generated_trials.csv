@@ -1,0 +1,9 @@
+trial_number,trial_type,reward_tile,led_0,led_1,led_2,led_3,led_4,led_5,led_6,led_7,led_8,led_9,led_10,led_11,led_12,led_13,led_14,led_15
+1,tile_01_stimulus,tile_01,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0
+2,tile_03_stimulus,tile_03,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1
+3,tile_01_stimulus,tile_01,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0
+4,tile_01_stimulus,tile_01,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0
+5,tile_03_stimulus,tile_03,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1
+6,tile_03_stimulus,tile_03,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1
+7,tile_01_stimulus,tile_01,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0
+8,tile_03_stimulus,tile_03,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1

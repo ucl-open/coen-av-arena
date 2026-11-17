@@ -1,0 +1,117 @@
+// AVA_TrialState.cs
+// Static class that broadcasts the current trial state across the Bonsai workflow.
+//
+// Two ways to read state:
+//   1. Static fields: AVA_TrialState.Phase, .TrialIndex, etc. (direct, any node)
+//   2. Observable: drop an AVA_TrialStateSource node into the workflow and subscribe
+//      to phase changes using standard Bonsai operators (Condition, Where, etc.)
+//
+// @hamid
+
+using System;
+using System.ComponentModel;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using Bonsai;
+
+public enum AVA_TrialPhase
+{
+    Idle,           // No trial active, waiting for session start
+    Staging,        // Pattern is being staged on Arduino (no show yet)
+    WaitForTrigger, // Staged and waiting for trigger event (mouse enters zone, or keypress)
+    StimulusOn,     // LEDs are on, waiting for response
+    WaitForResponse,// Within the response window
+    ITI,            // Inter-trial interval
+    Complete        // All trials finished
+}
+
+public static class AVA_TrialState
+{
+    private static AVA_TrialPhase _phase;
+    private static int _trialIndex;
+    private static int _totalTrials;
+    private static string _currentTrialType;
+    private static string _rewardTile;
+
+    private static BehaviorSubject<AVA_TrialPhase> _phaseSubject =
+        new BehaviorSubject<AVA_TrialPhase>(AVA_TrialPhase.Idle);
+
+    // Observable stream of phase changes — AVA_TrialStateSource subscribes to this
+    public static IObservable<AVA_TrialPhase> PhaseChanged
+    {
+        get { return _phaseSubject; }
+    }
+
+    public static AVA_TrialPhase Phase
+    {
+        get { return _phase; }
+        set
+        {
+            _phase = value;
+            _phaseSubject.OnNext(value);
+            Console.WriteLine(
+                String.Format("TrialState: {0} (trial {1}/{2})",
+                    _phase, _trialIndex, _totalTrials));
+        }
+    }
+
+    public static int TrialIndex
+    {
+        get { return _trialIndex; }
+    }
+
+    public static int TotalTrials
+    {
+        get { return _totalTrials; }
+    }
+
+    public static string CurrentTrialType
+    {
+        get { return _currentTrialType; }
+    }
+
+    public static string RewardTile
+    {
+        get { return _rewardTile; }
+    }
+
+    public static bool IsComplete
+    {
+        get { return _trialIndex >= _totalTrials; }
+    }
+
+    public static void Reset(int totalTrials)
+    {
+        _phase = AVA_TrialPhase.Idle;
+        _trialIndex = 0;
+        _totalTrials = totalTrials;
+        _currentTrialType = "";
+        _rewardTile = "";
+        _phaseSubject.OnNext(AVA_TrialPhase.Idle);
+    }
+
+    public static void SetTrial(int index, string trialType, string rewardTile)
+    {
+        _trialIndex = index;
+        _currentTrialType = trialType;
+        _rewardTile = rewardTile;
+    }
+}
+
+
+// Source node that emits the current trial phase whenever it changes.
+// Drop this into the workflow and use Condition, Where, etc. downstream.
+//
+// Example — gate the trigger key:
+//   KeyDown (T) → WithLatestFrom (AVA_TrialStateSource) → Condition (it != Complete)
+//
+// Or simply subscribe to see phase transitions in real time.
+
+[Description("Emits the current trial phase whenever it changes. Subscribe to gate or monitor trial state.")]
+public class AVA_TrialStateSource : Source<AVA_TrialPhase>
+{
+    public override IObservable<AVA_TrialPhase> Generate()
+    {
+        return AVA_TrialState.PhaseChanged;
+    }
+}
