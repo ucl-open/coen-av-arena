@@ -11,6 +11,8 @@
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
+                 xmlns:drw="clr-namespace:Bonsai.Vision.Drawing;assembly=Bonsai.Vision"
+                 xmlns:spk="clr-namespace:Bonsai.Spinnaker;assembly=Bonsai.Spinnaker"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -497,42 +499,40 @@
                 </Edges>
               </Workflow>
             </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="GroupWorkflow">
-                <Name>BitmaskMode</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="wie:KeyDown">
-                        <wie:Filter>Space</wie:Filter>
-                        <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:AVA_RandomPattern">
-                        <p1:NumLeds>16</p1:NumLeds>
-                        <p1:OnProbability>0.3</p1:OnProbability>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:AVA_BitmaskMessage">
-                        <p1:LedColor>255,255,255</p1:LedColor>
-                        <p1:Staged>true</p1:Staged>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="port:SerialWrite">
-                        <port:PortName>ArduinoPort</port:PortName>
-                      </Combinator>
-                    </Expression>
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Builder>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>BitmaskMode</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="wie:KeyDown">
+                      <wie:Filter>Space</wie:Filter>
+                      <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p1:AVA_RandomPattern">
+                      <p1:NumLeds>16</p1:NumLeds>
+                      <p1:OnProbability>0.3</p1:OnProbability>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p1:AVA_BitmaskMessage">
+                      <p1:LedColor>255,255,255</p1:LedColor>
+                      <p1:Staged>true</p1:Staged>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="port:SerialWrite">
+                      <port:PortName>ArduinoPort</port:PortName>
+                    </Combinator>
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                </Edges>
+              </Workflow>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="wie:KeyDown">
@@ -771,7 +771,7 @@
         </Builder>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
-        <Name>Trial Manager</Name>
+        <Name>TrialManager</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="Combinator">
@@ -1191,6 +1191,307 @@ Item4 as ExposureTime)</scr:Expression>
             </Edges>
           </Workflow>
         </Builder>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>TriggerZone</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="GroupWorkflow">
+                <Name>Centroid</Name>
+                <Workflow>
+                  <Nodes>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>BC_Camera</Name>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="cv:Threshold">
+                        <cv:ThresholdValue>128</cv:ThresholdValue>
+                        <cv:MaxValue>255</cv:MaxValue>
+                        <cv:ThresholdType>Binary</cv:ThresholdType>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="cv:FindContours">
+                        <cv:Mode>ConnectedComponent</cv:Mode>
+                        <cv:Method>ChainApproxNone</cv:Method>
+                        <cv:Offset>
+                          <cv:X>0</cv:X>
+                          <cv:Y>0</cv:Y>
+                        </cv:Offset>
+                        <cv:MinArea xsi:nil="true" />
+                        <cv:MaxArea xsi:nil="true" />
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="cv:BinaryRegionAnalysis" />
+                    </Expression>
+                    <Expression xsi:type="rx:BehaviorSubject">
+                      <Name>BC_BinaryRegions</Name>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="cv:LargestBinaryRegion" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="cv:Centroid" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>BC_CamThreshold</Name>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="rx:Condition">
+                      <Workflow>
+                        <Nodes>
+                          <Expression xsi:type="WorkflowInput">
+                            <Name>Source1</Name>
+                          </Expression>
+                          <Expression xsi:type="MemberSelector">
+                            <Selector>Item2</Selector>
+                          </Expression>
+                          <Expression xsi:type="WorkflowOutput" />
+                        </Nodes>
+                        <Edges>
+                          <Edge From="0" To="1" Label="Source1" />
+                          <Edge From="1" To="2" Label="Source1" />
+                        </Edges>
+                      </Workflow>
+                    </Expression>
+                    <Expression xsi:type="MemberSelector">
+                      <Selector>Item1</Selector>
+                    </Expression>
+                    <Expression xsi:type="rx:BehaviorSubject">
+                      <Name>BC_Centroid</Name>
+                    </Expression>
+                    <Expression xsi:type="WorkflowOutput" />
+                  </Nodes>
+                  <Edges>
+                    <Edge From="0" To="1" Label="Source1" />
+                    <Edge From="1" To="2" Label="Source1" />
+                    <Edge From="2" To="3" Label="Source1" />
+                    <Edge From="3" To="4" Label="Source1" />
+                    <Edge From="4" To="5" Label="Source1" />
+                    <Edge From="5" To="6" Label="Source1" />
+                    <Edge From="6" To="8" Label="Source1" />
+                    <Edge From="7" To="8" Label="Source2" />
+                    <Edge From="8" To="9" Label="Source1" />
+                    <Edge From="9" To="10" Label="Source1" />
+                    <Edge From="10" To="11" Label="Source1" />
+                    <Edge From="11" To="12" Label="Source1" />
+                  </Edges>
+                </Workflow>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>500,500</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p1:AVA_TriggerZone">
+                <p1:Shape>Circle</p1:Shape>
+                <p1:CenterX>0</p1:CenterX>
+                <p1:CenterY>0</p1:CenterY>
+                <p1:Radius>50</p1:Radius>
+                <p1:Width>100</p1:Width>
+                <p1:Height>100</p1:Height>
+                <p1:RequireTrialPhase>false</p1:RequireTrialPhase>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="drw:CreateCanvas">
+                  <drw:Size>
+                    <drw:Width>1440</drw:Width>
+                    <drw:Height>1080</drw:Height>
+                  </drw:Size>
+                  <drw:Depth>U8</drw:Depth>
+                  <drw:Channels>1</drw:Channels>
+                  <drw:Color>
+                    <drw:Val0>255</drw:Val0>
+                    <drw:Val1>255</drw:Val1>
+                    <drw:Val2>255</drw:Val2>
+                    <drw:Val3>0</drw:Val3>
+                  </drw:Color>
+                </Combinator>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="drw:Circle">
+                  <drw:Center>
+                    <drw:X>100</drw:X>
+                    <drw:Y>100</drw:Y>
+                  </drw:Center>
+                  <drw:Radius>100</drw:Radius>
+                  <drw:Color>
+                    <drw:Val0>0</drw:Val0>
+                    <drw:Val1>0</drw:Val1>
+                    <drw:Val2>0</drw:Val2>
+                    <drw:Val3>200</drw:Val3>
+                  </drw:Color>
+                  <drw:Thickness>-1</drw:Thickness>
+                  <drw:LineType>Connected8</drw:LineType>
+                  <drw:Shift>0</drw:Shift>
+                </Combinator>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="drw:DrawCanvas" />
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="SubscribeSubject">
+                <Name>BC_Camera</Name>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="rx:CombineLatest" />
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="BitwiseOr" />
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="rx:Visualizer">
+                <Workflow>
+                  <Nodes>
+                    <Expression xsi:type="WorkflowInput">
+                      <Name>Source1</Name>
+                    </Expression>
+                    <Expression xsi:type="WorkflowOutput" />
+                  </Nodes>
+                  <Edges>
+                    <Edge From="0" To="1" Label="Source1" />
+                  </Edges>
+                </Workflow>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" />
+            </Expression>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>CameraThreshold</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>BC_Camera</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="dsp:Sum" />
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Val0</Selector>
+                  </Expression>
+                  <Expression xsi:type="Subtract">
+                    <Operand xsi:type="DoubleProperty">
+                      <Value>1000000</Value>
+                    </Operand>
+                  </Expression>
+                  <Expression xsi:type="Divide">
+                    <Operand xsi:type="DoubleProperty">
+                      <Value>10000000</Value>
+                    </Operand>
+                  </Expression>
+                  <Expression xsi:type="ExternalizedMapping">
+                    <Property Name="Value" />
+                  </Expression>
+                  <Expression xsi:type="GreaterThan">
+                    <Operand xsi:type="DoubleProperty">
+                      <Value>0.9</Value>
+                    </Operand>
+                  </Expression>
+                  <Expression xsi:type="rx:BehaviorSubject">
+                    <Name>BC_CamThreshold</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                  <Edge From="4" To="6" Label="Source1" />
+                  <Edge From="5" To="6" Label="Source2" />
+                  <Edge From="6" To="7" Label="Source1" />
+                  <Edge From="7" To="8" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="spk:SpinnakerCapture">
+                <spk:Index xsi:nil="true" />
+                <spk:SerialNumber>26310540</spk:SerialNumber>
+                <spk:ColorProcessing>Default</spk:ColorProcessing>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Image</Selector>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject">
+              <Name>BC_Camera</Name>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>BC_Camera</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="drw:CreateCanvas">
+                <drw:Size>
+                  <drw:Width>1440</drw:Width>
+                  <drw:Height>1080</drw:Height>
+                </drw:Size>
+                <drw:Depth>U8</drw:Depth>
+                <drw:Channels>1</drw:Channels>
+                <drw:Color>
+                  <drw:Val0>255</drw:Val0>
+                  <drw:Val1>255</drw:Val1>
+                  <drw:Val2>255</drw:Val2>
+                  <drw:Val3>200</drw:Val3>
+                </drw:Color>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="drw:Circle">
+                <drw:Center>
+                  <drw:X>100</drw:X>
+                  <drw:Y>100</drw:Y>
+                </drw:Center>
+                <drw:Radius>100</drw:Radius>
+                <drw:Color>
+                  <drw:Val0>0</drw:Val0>
+                  <drw:Val1>0</drw:Val1>
+                  <drw:Val2>0</drw:Val2>
+                  <drw:Val3>200</drw:Val3>
+                </drw:Color>
+                <drw:Thickness>-1</drw:Thickness>
+                <drw:LineType>Connected8</drw:LineType>
+                <drw:Shift>0</drw:Shift>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="drw:DrawCanvas" />
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="7" Label="Source1" />
+            <Edge From="6" To="7" Label="Source2" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="13" To="14" Label="Source1" />
+            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="16" To="17" Label="Source1" />
+            <Edge From="17" To="18" Label="Source1" />
+          </Edges>
+        </Workflow>
       </Expression>
     </Nodes>
     <Edges />
