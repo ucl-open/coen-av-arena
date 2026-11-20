@@ -9,8 +9,7 @@
 //   - Add:         adds pixel values (can saturate to white)
 //   - Blend:       weighted average across entire image (base * Weight + overlay * (1 - Weight))
 //   - Replace:     overlay replaces base wherever overlay is not black (sharp cutout)
-//   - MaskedBlend: blends only where overlay is not black; rest of base is untouched
-//                  Use for semi-transparent filled shapes (e.g. tinted zone highlight)
+//   - MaskedBlend: blends where overlay is not black (i.e. Replace & Blend)
 //
 // Workflow wiring example:
 //   Camera Image ───────────────────────────────┐
