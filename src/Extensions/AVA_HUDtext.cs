@@ -5,7 +5,7 @@
 // frame using the most recent text canvas, so the display stays in sync.
 //
 // Wiring example:
-//   AVA_TrialStateSource → AVA_HUDtext ──┐
+//   AVA_TrialPhaseSource → AVA_HUDtext ──┐
 //   Camera (BGR) ───────────────────────────├→ CombineLatest → AVA_HUD
 //   Other overlays ─────────────────────────┘
 //
@@ -150,7 +150,7 @@ public class AVA_HUDtext : Transform<string, IplImage>
         return source.Select(text => RenderText(text));
     }
 
-    // ── AVA_TrialPhase input (direct wiring from AVA_TrialStateSource) ──
+    // ── AVA_TrialPhase input (direct wiring from AVA_TrialPhaseSource) ──
     public IObservable<IplImage> Process(IObservable<AVA_TrialPhase> source)
     {
         return source.Select(phase => RenderText(phase.ToString()));

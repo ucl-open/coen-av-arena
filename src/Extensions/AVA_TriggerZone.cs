@@ -119,7 +119,7 @@ public class AVA_TriggerZone : Transform<Point2f, bool>
                 // Check trial phase if required
                 if (_requireTrialPhase)
                 {
-                    AVA_TrialPhase phase = AVA_TrialState.Phase;
+                    AVA_TrialPhase phase = AVA_TrialManager.Phase;
                     if (phase != AVA_TrialPhase.ITI &&
                         phase != AVA_TrialPhase.WaitForTrigger)
                     {

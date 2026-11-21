@@ -1571,16 +1571,18 @@ Item4 as ExposureTime)</scr:Expression>
                 <Value>500,500</Value>
               </Combinator>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="p1:AVA_TriggerZone">
-                <p1:Shape>Circle</p1:Shape>
-                <p1:CenterX>0</p1:CenterX>
-                <p1:CenterY>0</p1:CenterY>
-                <p1:Radius>50</p1:Radius>
-                <p1:Width>100</p1:Width>
-                <p1:Height>100</p1:Height>
-                <p1:RequireTrialPhase>false</p1:RequireTrialPhase>
-              </Combinator>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="p1:AVA_TriggerZone">
+                  <p1:Shape>Circle</p1:Shape>
+                  <p1:CenterX>0</p1:CenterX>
+                  <p1:CenterY>0</p1:CenterY>
+                  <p1:Radius>50</p1:Radius>
+                  <p1:Width>100</p1:Width>
+                  <p1:Height>100</p1:Height>
+                  <p1:RequireTrialPhase>false</p1:RequireTrialPhase>
+                </Combinator>
+              </Builder>
             </Expression>
           </Nodes>
           <Edges>

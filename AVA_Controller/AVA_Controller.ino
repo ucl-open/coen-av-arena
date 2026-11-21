@@ -12,7 +12,7 @@
 #include <FastLED.h>
 
 #define LED_PIN     6
-#define NUM_LEDS    16
+#define NUM_LEDS    400
 #define LED_TYPE    WS2812B
 #define LED_BRIGHT  10       // LED brightness The range here is 0 to 255 (above that, values loop around, i.e. 256 == 0)
 #define COLOR_ORDER GRB       // This is how this LED_TYPE transmits color data, but you still send your values ordered as RGB
