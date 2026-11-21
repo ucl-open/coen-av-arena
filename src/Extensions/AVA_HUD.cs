@@ -11,11 +11,11 @@
 //   - Replace:     overlay replaces base wherever overlay is not black (sharp cutout)
 //   - MaskedBlend: blends where overlay is not black (i.e. Replace & Blend)
 //
-// Workflow wiring example:
-//   Camera Image ───────────────────────────────┐
+// Workflow wiring:
+//   Camera Image - ConvertColor (Grey2Bgr) ─────┐
 //   CreateCanvas - Circle - DrawCanvas ─────────┤
 //   CreateCanvas - Rectangle - DrawCanvas ──────├→ CombineLatest → AVA_HUD → Visualizer
-//   Text DrawCanvas ────────────────────────────┘
+//   CreateCanvas - AddText - DrawCanvas ────────┘
 //
 // @hamid
 
