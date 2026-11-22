@@ -8,7 +8,8 @@ public enum AVA_ModeState
 {
     Off,
     ASCII,
-    Bitmask
+    Bitmask,
+    FullFrame
 }
 
 public static class AVA_Mode

@@ -239,7 +239,7 @@
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="port:CreateSerialPort">
                       <port:Name>ArduinoPort</port:Name>
-                      <port:PortName>COM10</port:PortName>
+                      <port:PortName>COM11</port:PortName>
                       <port:BaudRate>115200</port:BaudRate>
                       <port:NewLine>\n</port:NewLine>
                       <port:Parity>None</port:Parity>
@@ -497,20 +497,60 @@
                       <Nodes>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="wie:KeyDown">
-                            <wie:Filter>Space</wie:Filter>
+                            <wie:Filter>P</wie:Filter>
                             <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="p1:AVA_RandomPattern">
+                            <p1:Mode>Bitmask</p1:Mode>
                             <p1:NumLeds>16</p1:NumLeds>
-                            <p1:OnProbability>0.3</p1:OnProbability>
+                            <p1:OnProbability>0.5</p1:OnProbability>
+                            <p1:BitmaskColor>255,255,255</p1:BitmaskColor>
+                            <p1:FullFrameColor>Random</p1:FullFrameColor>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="p1:AVA_BitmaskMessage">
                             <p1:LedColor>255,255,255</p1:LedColor>
-                            <p1:Staged>true</p1:Staged>
+                            <p1:Staged>false</p1:Staged>
+                          </Combinator>
+                        </Expression>
+                        <Expression xsi:type="Combinator">
+                          <Combinator xsi:type="port:SerialWrite">
+                            <port:PortName>ArduinoPort</port:PortName>
+                          </Combinator>
+                        </Expression>
+                      </Nodes>
+                      <Edges>
+                        <Edge From="0" To="1" Label="Source1" />
+                        <Edge From="1" To="2" Label="Source1" />
+                        <Edge From="2" To="3" Label="Source1" />
+                      </Edges>
+                    </Workflow>
+                  </Expression>
+                  <Expression xsi:type="GroupWorkflow">
+                    <Name>FullFrameMode</Name>
+                    <Workflow>
+                      <Nodes>
+                        <Expression xsi:type="Combinator">
+                          <Combinator xsi:type="wie:KeyDown">
+                            <wie:Filter>O</wie:Filter>
+                            <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
+                          </Combinator>
+                        </Expression>
+                        <Expression xsi:type="Combinator">
+                          <Combinator xsi:type="p1:AVA_RandomPattern">
+                            <p1:Mode>FullFrame</p1:Mode>
+                            <p1:NumLeds>400</p1:NumLeds>
+                            <p1:OnProbability>0.8</p1:OnProbability>
+                            <p1:BitmaskColor>255,255,255</p1:BitmaskColor>
+                            <p1:FullFrameColor>Random</p1:FullFrameColor>
+                          </Combinator>
+                        </Expression>
+                        <Expression xsi:type="Combinator">
+                          <Combinator xsi:type="p1:AVA_FullframeMessage">
+                            <p1:Staged>false</p1:Staged>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="Combinator">
@@ -548,6 +588,17 @@
                       <p1:Mode>Bitmask</p1:Mode>
                     </Combinator>
                   </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="wie:KeyDown">
+                      <wie:Filter>F</wie:Filter>
+                      <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p1:AVA_ModeToggle">
+                      <p1:Mode>FullFrame</p1:Mode>
+                    </Combinator>
+                  </Expression>
                   <Expression xsi:type="Disable">
                     <Builder xsi:type="Combinator">
                       <Combinator xsi:type="port:SerialReadLine">
@@ -557,8 +608,9 @@
                   </Expression>
                 </Nodes>
                 <Edges>
-                  <Edge From="2" To="3" Label="Source1" />
-                  <Edge From="4" To="5" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                  <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="7" To="8" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -661,288 +713,290 @@
                 </Workflow>
               </Builder>
             </Expression>
-            <Expression xsi:type="GroupWorkflow">
-              <Name>HUD</Name>
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="ExternalizedMapping">
-                    <Property Name="Value" />
-                  </Expression>
-                  <Expression xsi:type="GroupWorkflow">
-                    <Name>CameraThreshold</Name>
-                    <Workflow>
-                      <Nodes>
-                        <Expression xsi:type="SubscribeSubject">
-                          <Name>BC_Camera</Name>
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="dsp:Sum" />
-                        </Expression>
-                        <Expression xsi:type="MemberSelector">
-                          <Selector>Val0</Selector>
-                        </Expression>
-                        <Expression xsi:type="Subtract">
-                          <Operand xsi:type="DoubleProperty">
-                            <Value>1000000</Value>
-                          </Operand>
-                        </Expression>
-                        <Expression xsi:type="Divide">
-                          <Operand xsi:type="DoubleProperty">
-                            <Value>10000000</Value>
-                          </Operand>
-                        </Expression>
-                        <Expression xsi:type="ExternalizedMapping">
-                          <Property Name="Value" />
-                        </Expression>
-                        <Expression xsi:type="GreaterThan">
-                          <Operand xsi:type="DoubleProperty">
-                            <Value>0.4</Value>
-                          </Operand>
-                        </Expression>
-                        <Expression xsi:type="rx:BehaviorSubject">
-                          <Name>BC_CamThreshold</Name>
-                        </Expression>
-                        <Expression xsi:type="WorkflowOutput" />
-                      </Nodes>
-                      <Edges>
-                        <Edge From="0" To="1" Label="Source1" />
-                        <Edge From="1" To="2" Label="Source1" />
-                        <Edge From="2" To="3" Label="Source1" />
-                        <Edge From="3" To="4" Label="Source1" />
-                        <Edge From="4" To="6" Label="Source1" />
-                        <Edge From="5" To="6" Label="Source2" />
-                        <Edge From="6" To="7" Label="Source1" />
-                        <Edge From="7" To="8" Label="Source1" />
-                      </Edges>
-                    </Workflow>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="spk:SpinnakerCapture">
-                      <spk:Index xsi:nil="true" />
-                      <spk:SerialNumber>26310540</spk:SerialNumber>
-                      <spk:ColorProcessing>Default</spk:ColorProcessing>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Image</Selector>
-                  </Expression>
-                  <Expression xsi:type="rx:BehaviorSubject">
-                    <Name>BC_Camera</Name>
-                  </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>BC_Camera</Name>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="cv:ConvertColor">
-                      <cv:Conversion>Gray2Bgr</cv:Conversion>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:CreateCanvas">
-                      <drw:Size>
-                        <drw:Width>1440</drw:Width>
-                        <drw:Height>1080</drw:Height>
-                      </drw:Size>
-                      <drw:Depth>U8</drw:Depth>
-                      <drw:Channels>3</drw:Channels>
-                      <drw:Color>
-                        <drw:Val0>0</drw:Val0>
-                        <drw:Val1>0</drw:Val1>
-                        <drw:Val2>0</drw:Val2>
-                        <drw:Val3>0</drw:Val3>
-                      </drw:Color>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:Circle">
-                      <drw:Center>
-                        <drw:X>100</drw:X>
-                        <drw:Y>100</drw:Y>
-                      </drw:Center>
-                      <drw:Radius>100</drw:Radius>
-                      <drw:Color>
-                        <drw:Val0>0</drw:Val0>
-                        <drw:Val1>0</drw:Val1>
-                        <drw:Val2>255</drw:Val2>
-                        <drw:Val3>0</drw:Val3>
-                      </drw:Color>
-                      <drw:Thickness>30</drw:Thickness>
-                      <drw:LineType>Connected4</drw:LineType>
-                      <drw:Shift>0</drw:Shift>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:DrawCanvas" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:CreateCanvas">
-                      <drw:Size>
-                        <drw:Width>1440</drw:Width>
-                        <drw:Height>1080</drw:Height>
-                      </drw:Size>
-                      <drw:Depth>U8</drw:Depth>
-                      <drw:Channels>3</drw:Channels>
-                      <drw:Color>
-                        <drw:Val0>0</drw:Val0>
-                        <drw:Val1>0</drw:Val1>
-                        <drw:Val2>0</drw:Val2>
-                        <drw:Val3>0</drw:Val3>
-                      </drw:Color>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:Rectangle">
-                      <drw:Origin>
-                        <drw:X>500</drw:X>
-                        <drw:Y>500</drw:Y>
-                      </drw:Origin>
-                      <drw:Size>
-                        <drw:Width>500</drw:Width>
-                        <drw:Height>500</drw:Height>
-                      </drw:Size>
-                      <drw:Color>
-                        <drw:Val0>0</drw:Val0>
-                        <drw:Val1>255</drw:Val1>
-                        <drw:Val2>0</drw:Val2>
-                        <drw:Val3>200</drw:Val3>
-                      </drw:Color>
-                      <drw:Thickness>-1</drw:Thickness>
-                      <drw:LineType>Connected8</drw:LineType>
-                      <drw:Shift>0</drw:Shift>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:DrawCanvas" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:CreateCanvas">
-                      <drw:Size>
-                        <drw:Width>1440</drw:Width>
-                        <drw:Height>1080</drw:Height>
-                      </drw:Size>
-                      <drw:Depth>U8</drw:Depth>
-                      <drw:Channels>3</drw:Channels>
-                      <drw:Color>
-                        <drw:Val0>0</drw:Val0>
-                        <drw:Val1>0</drw:Val1>
-                        <drw:Val2>0</drw:Val2>
-                        <drw:Val3>0</drw:Val3>
-                      </drw:Color>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:AddText">
-                      <drw:Text>Trigger Zone</drw:Text>
-                      <drw:Alignment>Near</drw:Alignment>
-                      <drw:LineAlignment>Near</drw:LineAlignment>
-                      <drw:TextRenderingHint>AntiAliasGridFit</drw:TextRenderingHint>
-                      <drw:Color>
-                        <drw:Val0>255</drw:Val0>
-                        <drw:Val1>255</drw:Val1>
-                        <drw:Val2>255</drw:Val2>
-                        <drw:Val3>255</drw:Val3>
-                      </drw:Color>
-                      <drw:Font>Microsoft Sans Serif, 10pt</drw:Font>
-                      <drw:Origin>
-                        <drw:X>500</drw:X>
-                        <drw:Y>500</drw:Y>
-                      </drw:Origin>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:DrawCanvas" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:CreateCanvas">
-                      <drw:Size>
-                        <drw:Width>1440</drw:Width>
-                        <drw:Height>1080</drw:Height>
-                      </drw:Size>
-                      <drw:Depth>U8</drw:Depth>
-                      <drw:Channels>3</drw:Channels>
-                      <drw:Color>
-                        <drw:Val0>0</drw:Val0>
-                        <drw:Val1>0</drw:Val1>
-                        <drw:Val2>0</drw:Val2>
-                        <drw:Val3>0</drw:Val3>
-                      </drw:Color>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:Rectangle">
-                      <drw:Origin>
-                        <drw:X>600</drw:X>
-                        <drw:Y>250</drw:Y>
-                      </drw:Origin>
-                      <drw:Size>
-                        <drw:Width>100</drw:Width>
-                        <drw:Height>100</drw:Height>
-                      </drw:Size>
-                      <drw:Color>
-                        <drw:Val0>200</drw:Val0>
-                        <drw:Val1>0</drw:Val1>
-                        <drw:Val2>150</drw:Val2>
-                        <drw:Val3>200</drw:Val3>
-                      </drw:Color>
-                      <drw:Thickness>10</drw:Thickness>
-                      <drw:LineType>Connected8</drw:LineType>
-                      <drw:Shift>0</drw:Shift>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="drw:DrawCanvas" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:AVA_TrialPhaseSource" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:AVA_HUDtext">
-                      <p1:Width>1440</p1:Width>
-                      <p1:Height>1080</p1:Height>
-                      <p1:OriginX>100</p1:OriginX>
-                      <p1:OriginY>900</p1:OriginY>
-                      <p1:FontScale>1</p1:FontScale>
-                      <p1:FontThickness>2</p1:FontThickness>
-                      <p1:ColorR>255</p1:ColorR>
-                      <p1:ColorG>255</p1:ColorG>
-                      <p1:ColorB>255</p1:ColorB>
-                      <p1:Prefix>Phase: </p1:Prefix>
-                      <p1:FontFace>HersheySimplex</p1:FontFace>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:CombineLatest" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:AVA_HUD">
-                      <p1:Mode>MaskedBlend</p1:Mode>
-                      <p1:Weight>0.8</p1:Weight>
-                    </Combinator>
-                  </Expression>
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
-                  <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="5" To="6" Label="Source1" />
-                  <Edge From="6" To="21" Label="Source1" />
-                  <Edge From="7" To="8" Label="Source1" />
-                  <Edge From="8" To="9" Label="Source1" />
-                  <Edge From="9" To="21" Label="Source2" />
-                  <Edge From="10" To="11" Label="Source1" />
-                  <Edge From="11" To="12" Label="Source1" />
-                  <Edge From="12" To="21" Label="Source3" />
-                  <Edge From="13" To="14" Label="Source1" />
-                  <Edge From="14" To="15" Label="Source1" />
-                  <Edge From="15" To="21" Label="Source4" />
-                  <Edge From="16" To="17" Label="Source1" />
-                  <Edge From="17" To="18" Label="Source1" />
-                  <Edge From="18" To="21" Label="Source5" />
-                  <Edge From="19" To="20" Label="Source1" />
-                  <Edge From="20" To="21" Label="Source6" />
-                  <Edge From="21" To="22" Label="Source1" />
-                </Edges>
-              </Workflow>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="GroupWorkflow">
+                <Name>HUD</Name>
+                <Workflow>
+                  <Nodes>
+                    <Expression xsi:type="ExternalizedMapping">
+                      <Property Name="Value" />
+                    </Expression>
+                    <Expression xsi:type="GroupWorkflow">
+                      <Name>CameraThreshold</Name>
+                      <Workflow>
+                        <Nodes>
+                          <Expression xsi:type="SubscribeSubject">
+                            <Name>BC_Camera</Name>
+                          </Expression>
+                          <Expression xsi:type="Combinator">
+                            <Combinator xsi:type="dsp:Sum" />
+                          </Expression>
+                          <Expression xsi:type="MemberSelector">
+                            <Selector>Val0</Selector>
+                          </Expression>
+                          <Expression xsi:type="Subtract">
+                            <Operand xsi:type="DoubleProperty">
+                              <Value>1000000</Value>
+                            </Operand>
+                          </Expression>
+                          <Expression xsi:type="Divide">
+                            <Operand xsi:type="DoubleProperty">
+                              <Value>10000000</Value>
+                            </Operand>
+                          </Expression>
+                          <Expression xsi:type="ExternalizedMapping">
+                            <Property Name="Value" />
+                          </Expression>
+                          <Expression xsi:type="GreaterThan">
+                            <Operand xsi:type="DoubleProperty">
+                              <Value>0.4</Value>
+                            </Operand>
+                          </Expression>
+                          <Expression xsi:type="rx:BehaviorSubject">
+                            <Name>BC_CamThreshold</Name>
+                          </Expression>
+                          <Expression xsi:type="WorkflowOutput" />
+                        </Nodes>
+                        <Edges>
+                          <Edge From="0" To="1" Label="Source1" />
+                          <Edge From="1" To="2" Label="Source1" />
+                          <Edge From="2" To="3" Label="Source1" />
+                          <Edge From="3" To="4" Label="Source1" />
+                          <Edge From="4" To="6" Label="Source1" />
+                          <Edge From="5" To="6" Label="Source2" />
+                          <Edge From="6" To="7" Label="Source1" />
+                          <Edge From="7" To="8" Label="Source1" />
+                        </Edges>
+                      </Workflow>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="spk:SpinnakerCapture">
+                        <spk:Index xsi:nil="true" />
+                        <spk:SerialNumber>26310540</spk:SerialNumber>
+                        <spk:ColorProcessing>Default</spk:ColorProcessing>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="MemberSelector">
+                      <Selector>Image</Selector>
+                    </Expression>
+                    <Expression xsi:type="rx:BehaviorSubject">
+                      <Name>BC_Camera</Name>
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>BC_Camera</Name>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="cv:ConvertColor">
+                        <cv:Conversion>Gray2Bgr</cv:Conversion>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:CreateCanvas">
+                        <drw:Size>
+                          <drw:Width>1440</drw:Width>
+                          <drw:Height>1080</drw:Height>
+                        </drw:Size>
+                        <drw:Depth>U8</drw:Depth>
+                        <drw:Channels>3</drw:Channels>
+                        <drw:Color>
+                          <drw:Val0>0</drw:Val0>
+                          <drw:Val1>0</drw:Val1>
+                          <drw:Val2>0</drw:Val2>
+                          <drw:Val3>0</drw:Val3>
+                        </drw:Color>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:Circle">
+                        <drw:Center>
+                          <drw:X>100</drw:X>
+                          <drw:Y>100</drw:Y>
+                        </drw:Center>
+                        <drw:Radius>100</drw:Radius>
+                        <drw:Color>
+                          <drw:Val0>0</drw:Val0>
+                          <drw:Val1>0</drw:Val1>
+                          <drw:Val2>255</drw:Val2>
+                          <drw:Val3>0</drw:Val3>
+                        </drw:Color>
+                        <drw:Thickness>30</drw:Thickness>
+                        <drw:LineType>Connected4</drw:LineType>
+                        <drw:Shift>0</drw:Shift>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:DrawCanvas" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:CreateCanvas">
+                        <drw:Size>
+                          <drw:Width>1440</drw:Width>
+                          <drw:Height>1080</drw:Height>
+                        </drw:Size>
+                        <drw:Depth>U8</drw:Depth>
+                        <drw:Channels>3</drw:Channels>
+                        <drw:Color>
+                          <drw:Val0>0</drw:Val0>
+                          <drw:Val1>0</drw:Val1>
+                          <drw:Val2>0</drw:Val2>
+                          <drw:Val3>0</drw:Val3>
+                        </drw:Color>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:Rectangle">
+                        <drw:Origin>
+                          <drw:X>500</drw:X>
+                          <drw:Y>500</drw:Y>
+                        </drw:Origin>
+                        <drw:Size>
+                          <drw:Width>500</drw:Width>
+                          <drw:Height>500</drw:Height>
+                        </drw:Size>
+                        <drw:Color>
+                          <drw:Val0>0</drw:Val0>
+                          <drw:Val1>255</drw:Val1>
+                          <drw:Val2>0</drw:Val2>
+                          <drw:Val3>200</drw:Val3>
+                        </drw:Color>
+                        <drw:Thickness>-1</drw:Thickness>
+                        <drw:LineType>Connected8</drw:LineType>
+                        <drw:Shift>0</drw:Shift>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:DrawCanvas" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:CreateCanvas">
+                        <drw:Size>
+                          <drw:Width>1440</drw:Width>
+                          <drw:Height>1080</drw:Height>
+                        </drw:Size>
+                        <drw:Depth>U8</drw:Depth>
+                        <drw:Channels>3</drw:Channels>
+                        <drw:Color>
+                          <drw:Val0>0</drw:Val0>
+                          <drw:Val1>0</drw:Val1>
+                          <drw:Val2>0</drw:Val2>
+                          <drw:Val3>0</drw:Val3>
+                        </drw:Color>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:AddText">
+                        <drw:Text>Trigger Zone</drw:Text>
+                        <drw:Alignment>Near</drw:Alignment>
+                        <drw:LineAlignment>Near</drw:LineAlignment>
+                        <drw:TextRenderingHint>AntiAliasGridFit</drw:TextRenderingHint>
+                        <drw:Color>
+                          <drw:Val0>255</drw:Val0>
+                          <drw:Val1>255</drw:Val1>
+                          <drw:Val2>255</drw:Val2>
+                          <drw:Val3>255</drw:Val3>
+                        </drw:Color>
+                        <drw:Font>Microsoft Sans Serif, 10pt</drw:Font>
+                        <drw:Origin>
+                          <drw:X>500</drw:X>
+                          <drw:Y>500</drw:Y>
+                        </drw:Origin>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:DrawCanvas" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:CreateCanvas">
+                        <drw:Size>
+                          <drw:Width>1440</drw:Width>
+                          <drw:Height>1080</drw:Height>
+                        </drw:Size>
+                        <drw:Depth>U8</drw:Depth>
+                        <drw:Channels>3</drw:Channels>
+                        <drw:Color>
+                          <drw:Val0>0</drw:Val0>
+                          <drw:Val1>0</drw:Val1>
+                          <drw:Val2>0</drw:Val2>
+                          <drw:Val3>0</drw:Val3>
+                        </drw:Color>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:Rectangle">
+                        <drw:Origin>
+                          <drw:X>600</drw:X>
+                          <drw:Y>250</drw:Y>
+                        </drw:Origin>
+                        <drw:Size>
+                          <drw:Width>100</drw:Width>
+                          <drw:Height>100</drw:Height>
+                        </drw:Size>
+                        <drw:Color>
+                          <drw:Val0>200</drw:Val0>
+                          <drw:Val1>0</drw:Val1>
+                          <drw:Val2>150</drw:Val2>
+                          <drw:Val3>200</drw:Val3>
+                        </drw:Color>
+                        <drw:Thickness>10</drw:Thickness>
+                        <drw:LineType>Connected8</drw:LineType>
+                        <drw:Shift>0</drw:Shift>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="drw:DrawCanvas" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="p1:AVA_TrialPhaseSource" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="p1:AVA_HUDtext">
+                        <p1:Width>1440</p1:Width>
+                        <p1:Height>1080</p1:Height>
+                        <p1:OriginX>100</p1:OriginX>
+                        <p1:OriginY>900</p1:OriginY>
+                        <p1:FontScale>1</p1:FontScale>
+                        <p1:FontThickness>2</p1:FontThickness>
+                        <p1:ColorR>255</p1:ColorR>
+                        <p1:ColorG>255</p1:ColorG>
+                        <p1:ColorB>255</p1:ColorB>
+                        <p1:Prefix>Phase: </p1:Prefix>
+                        <p1:FontFace>HersheySimplex</p1:FontFace>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:CombineLatest" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="p1:AVA_HUD">
+                        <p1:Mode>MaskedBlend</p1:Mode>
+                        <p1:Weight>0.8</p1:Weight>
+                      </Combinator>
+                    </Expression>
+                  </Nodes>
+                  <Edges>
+                    <Edge From="0" To="1" Label="Source1" />
+                    <Edge From="2" To="3" Label="Source1" />
+                    <Edge From="3" To="4" Label="Source1" />
+                    <Edge From="5" To="6" Label="Source1" />
+                    <Edge From="6" To="21" Label="Source1" />
+                    <Edge From="7" To="8" Label="Source1" />
+                    <Edge From="8" To="9" Label="Source1" />
+                    <Edge From="9" To="21" Label="Source2" />
+                    <Edge From="10" To="11" Label="Source1" />
+                    <Edge From="11" To="12" Label="Source1" />
+                    <Edge From="12" To="21" Label="Source3" />
+                    <Edge From="13" To="14" Label="Source1" />
+                    <Edge From="14" To="15" Label="Source1" />
+                    <Edge From="15" To="21" Label="Source4" />
+                    <Edge From="16" To="17" Label="Source1" />
+                    <Edge From="17" To="18" Label="Source1" />
+                    <Edge From="18" To="21" Label="Source5" />
+                    <Edge From="19" To="20" Label="Source1" />
+                    <Edge From="20" To="21" Label="Source6" />
+                    <Edge From="21" To="22" Label="Source1" />
+                  </Edges>
+                </Workflow>
+              </Builder>
             </Expression>
           </Nodes>
           <Edges />
