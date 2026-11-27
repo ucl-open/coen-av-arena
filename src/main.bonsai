@@ -602,106 +602,104 @@
               <harp:FilterType>Include</harp:FilterType>
               <harp:Register xsi:type="harp:TimestampSeconds" />
             </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="GroupWorkflow">
-                <Name>TrialManager</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="wie:KeyDown">
-                        <wie:Filter>P</wie:Filter>
-                        <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:AVA_TrialGenerator">
-                        <p1:CsvPath>trials_miniAVA.csv</p1:CsvPath>
-                        <p1:GeneratedCsvPath>generated_trials.csv</p1:GeneratedCsvPath>
-                        <p1:TrialsPerType>2,2</p1:TrialsPerType>
-                        <p1:NumBlocks>2</p1:NumBlocks>
-                        <p1:MaxConsecutive>4</p1:MaxConsecutive>
-                        <p1:NumLeds>16</p1:NumLeds>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:AVA_BitmaskMessage">
-                        <p1:LedColor>255,255,255</p1:LedColor>
-                        <p1:Staged>true</p1:Staged>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="port:SerialWrite">
-                        <port:PortName>ArduinoPort</port:PortName>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="wie:KeyDown">
-                        <wie:Filter>O</wie:Filter>
-                        <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:AVA_TrialPhaseSource" />
-                    </Expression>
-                    <Expression xsi:type="rx:BehaviorSubject">
-                      <Name>TrialPhase</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="MemberSelector">
-                      <Selector>Item2</Selector>
-                    </Expression>
-                    <Expression xsi:type="NotEqual">
-                      <Operand xsi:type="WorkflowProperty" TypeArguments="p1:AVA_TrialPhase">
-                        <Value>Complete</Value>
-                      </Operand>
-                    </Expression>
-                    <Expression xsi:type="rx:Condition">
-                      <Description />
-                      <Workflow>
-                        <Nodes>
-                          <Expression xsi:type="WorkflowInput">
-                            <Name>Source1</Name>
-                          </Expression>
-                          <Expression xsi:type="WorkflowOutput" />
-                        </Nodes>
-                        <Edges>
-                          <Edge From="0" To="1" Label="Source1" />
-                        </Edges>
-                      </Workflow>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="StringProperty">
-                        <Value>T</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="port:SerialWriteLine">
-                        <port:PortName>ArduinoPort</port:PortName>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="port:SerialReadLine">
-                        <port:PortName>ArduinoPort</port:PortName>
-                      </Combinator>
-                    </Expression>
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="4" To="7" Label="Source1" />
-                    <Edge From="5" To="6" Label="Source1" />
-                    <Edge From="6" To="7" Label="Source2" />
-                    <Edge From="7" To="8" Label="Source1" />
-                    <Edge From="8" To="9" Label="Source1" />
-                    <Edge From="9" To="10" Label="Source1" />
-                    <Edge From="10" To="11" Label="Source1" />
-                    <Edge From="11" To="12" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Builder>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>TrialManager</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="wie:KeyDown">
+                      <wie:Filter>P</wie:Filter>
+                      <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p1:AVA_TrialGenerator">
+                      <p1:CsvPath>trials_miniAVA.csv</p1:CsvPath>
+                      <p1:GeneratedCsvPath>generated_trials.csv</p1:GeneratedCsvPath>
+                      <p1:TrialsPerType>2,2</p1:TrialsPerType>
+                      <p1:NumBlocks>2</p1:NumBlocks>
+                      <p1:MaxConsecutive>4</p1:MaxConsecutive>
+                      <p1:NumLeds>16</p1:NumLeds>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p1:AVA_BitmaskMessage">
+                      <p1:LedColor>255,255,255</p1:LedColor>
+                      <p1:Staged>true</p1:Staged>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="port:SerialWrite">
+                      <port:PortName>ArduinoPort</port:PortName>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="wie:KeyDown">
+                      <wie:Filter>O</wie:Filter>
+                      <wie:SuppressRepetitions>true</wie:SuppressRepetitions>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p1:AVA_TrialPhaseSource" />
+                  </Expression>
+                  <Expression xsi:type="rx:BehaviorSubject">
+                    <Name>TrialPhase</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Item2</Selector>
+                  </Expression>
+                  <Expression xsi:type="NotEqual">
+                    <Operand xsi:type="WorkflowProperty" TypeArguments="p1:AVA_TrialPhase">
+                      <Value>Complete</Value>
+                    </Operand>
+                  </Expression>
+                  <Expression xsi:type="rx:Condition">
+                    <Description />
+                    <Workflow>
+                      <Nodes>
+                        <Expression xsi:type="WorkflowInput">
+                          <Name>Source1</Name>
+                        </Expression>
+                        <Expression xsi:type="WorkflowOutput" />
+                      </Nodes>
+                      <Edges>
+                        <Edge From="0" To="1" Label="Source1" />
+                      </Edges>
+                    </Workflow>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="StringProperty">
+                      <Value>T</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="port:SerialWriteLine">
+                      <port:PortName>ArduinoPort</port:PortName>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="port:SerialReadLine">
+                      <port:PortName>ArduinoPort</port:PortName>
+                    </Combinator>
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="4" To="7" Label="Source1" />
+                  <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="6" To="7" Label="Source2" />
+                  <Edge From="7" To="8" Label="Source1" />
+                  <Edge From="8" To="9" Label="Source1" />
+                  <Edge From="9" To="10" Label="Source1" />
+                  <Edge From="10" To="11" Label="Source1" />
+                  <Edge From="11" To="12" Label="Source1" />
+                </Edges>
+              </Workflow>
             </Expression>
           </Nodes>
           <Edges>
@@ -715,92 +713,112 @@
         <Name>Instruments</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="GroupWorkflow">
-                <Name>Centroid</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>BC Camera</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="cv:Threshold">
-                        <cv:ThresholdValue>128</cv:ThresholdValue>
-                        <cv:MaxValue>255</cv:MaxValue>
-                        <cv:ThresholdType>Binary</cv:ThresholdType>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="cv:FindContours">
-                        <cv:Mode>ConnectedComponent</cv:Mode>
-                        <cv:Method>ChainApproxNone</cv:Method>
-                        <cv:Offset>
-                          <cv:X>0</cv:X>
-                          <cv:Y>0</cv:Y>
-                        </cv:Offset>
-                        <cv:MinArea xsi:nil="true" />
-                        <cv:MaxArea xsi:nil="true" />
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="cv:BinaryRegionAnalysis" />
-                    </Expression>
-                    <Expression xsi:type="rx:BehaviorSubject">
-                      <Name>BC BinaryRegions</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="cv:LargestBinaryRegion" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="cv:Centroid" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>BC Threshold</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="rx:Condition">
-                      <Workflow>
-                        <Nodes>
-                          <Expression xsi:type="WorkflowInput">
-                            <Name>Source1</Name>
-                          </Expression>
-                          <Expression xsi:type="MemberSelector">
-                            <Selector>Item2</Selector>
-                          </Expression>
-                          <Expression xsi:type="WorkflowOutput" />
-                        </Nodes>
-                        <Edges>
-                          <Edge From="0" To="1" Label="Source1" />
-                          <Edge From="1" To="2" Label="Source1" />
-                        </Edges>
-                      </Workflow>
-                    </Expression>
-                    <Expression xsi:type="MemberSelector">
-                      <Selector>Item1</Selector>
-                    </Expression>
-                    <Expression xsi:type="rx:BehaviorSubject">
-                      <Name>BC Centroid</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source1" />
-                    <Edge From="4" To="5" Label="Source1" />
-                    <Edge From="5" To="6" Label="Source1" />
-                    <Edge From="6" To="8" Label="Source1" />
-                    <Edge From="7" To="8" Label="Source2" />
-                    <Edge From="8" To="9" Label="Source1" />
-                    <Edge From="9" To="10" Label="Source1" />
-                    <Edge From="10" To="11" Label="Source1" />
-                    <Edge From="11" To="12" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Builder>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>Centroid</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>BC_Camera</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:Crop">
+                      <cv:RegionOfInterest>
+                        <cv:X>229</cv:X>
+                        <cv:Y>117</cv:Y>
+                        <cv:Width>909</cv:Width>
+                        <cv:Height>846</cv:Height>
+                      </cv:RegionOfInterest>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:Threshold">
+                      <cv:ThresholdValue>75</cv:ThresholdValue>
+                      <cv:MaxValue>255</cv:MaxValue>
+                      <cv:ThresholdType>BinaryInv</cv:ThresholdType>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:FindContours">
+                      <cv:Mode>ConnectedComponent</cv:Mode>
+                      <cv:Method>ChainApproxNone</cv:Method>
+                      <cv:Offset>
+                        <cv:X>0</cv:X>
+                        <cv:Y>0</cv:Y>
+                      </cv:Offset>
+                      <cv:MinArea xsi:nil="true" />
+                      <cv:MaxArea xsi:nil="true" />
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:BinaryRegionAnalysis" />
+                  </Expression>
+                  <Expression xsi:type="rx:BehaviorSubject">
+                    <Name>BC BinaryRegions</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:LargestBinaryRegion" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:Centroid" />
+                  </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>BC_CamThreshold</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
+                  <Expression xsi:type="rx:Condition">
+                    <Workflow>
+                      <Nodes>
+                        <Expression xsi:type="WorkflowInput">
+                          <Name>Source1</Name>
+                        </Expression>
+                        <Expression xsi:type="MemberSelector">
+                          <Selector>Item2</Selector>
+                        </Expression>
+                        <Expression xsi:type="WorkflowOutput" />
+                      </Nodes>
+                      <Edges>
+                        <Edge From="0" To="1" Label="Source1" />
+                        <Edge From="1" To="2" Label="Source1" />
+                      </Edges>
+                    </Workflow>
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Item1</Selector>
+                  </Expression>
+                  <Expression xsi:type="rx:BehaviorSubject">
+                    <Name>BC Centroid2</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                  <Edge From="4" To="5" Label="Source1" />
+                  <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="6" To="7" Label="Source1" />
+                  <Edge From="7" To="9" Label="Source1" />
+                  <Edge From="8" To="9" Label="Source2" />
+                  <Edge From="9" To="10" Label="Source1" />
+                  <Edge From="10" To="11" Label="Source1" />
+                  <Edge From="11" To="12" Label="Source1" />
+                  <Edge From="12" To="13" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p1:AVA_TriggerZone">
+                <p1:Shape>Circle</p1:Shape>
+                <p1:CenterX>670</p1:CenterX>
+                <p1:CenterY>670</p1:CenterY>
+                <p1:Radius>150</p1:Radius>
+                <p1:Width>100</p1:Width>
+                <p1:Height>100</p1:Height>
+                <p1:RequireTrialPhase>false</p1:RequireTrialPhase>
+              </Combinator>
             </Expression>
             <Expression xsi:type="GroupWorkflow">
               <Name>HUD</Name>
@@ -837,7 +855,7 @@
                         </Expression>
                         <Expression xsi:type="GreaterThan">
                           <Operand xsi:type="DoubleProperty">
-                            <Value>0.4</Value>
+                            <Value>0.9</Value>
                           </Operand>
                         </Expression>
                         <Expression xsi:type="rx:BehaviorSubject">
@@ -1086,7 +1104,9 @@
               </Workflow>
             </Expression>
           </Nodes>
-          <Edges />
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+          </Edges>
         </Workflow>
       </Expression>
       <Expression xsi:type="Disable">
@@ -1614,18 +1634,20 @@ Item4 as ExposureTime)</scr:Expression>
                 </Workflow>
               </Builder>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="StringProperty">
-                <Value>500,500</Value>
-              </Combinator>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="StringProperty">
+                  <Value>500,500</Value>
+                </Combinator>
+              </Builder>
             </Expression>
             <Expression xsi:type="Disable">
               <Builder xsi:type="Combinator">
                 <Combinator xsi:type="p1:AVA_TriggerZone">
                   <p1:Shape>Circle</p1:Shape>
-                  <p1:CenterX>0</p1:CenterX>
-                  <p1:CenterY>0</p1:CenterY>
-                  <p1:Radius>50</p1:Radius>
+                  <p1:CenterX>900</p1:CenterX>
+                  <p1:CenterY>750</p1:CenterY>
+                  <p1:Radius>150</p1:Radius>
                   <p1:Width>100</p1:Width>
                   <p1:Height>100</p1:Height>
                   <p1:RequireTrialPhase>false</p1:RequireTrialPhase>
